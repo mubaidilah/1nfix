@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>Infix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/stellarnav.min.css">
+    <link rel="stylesheet" href="css/pignose.calendar.min.css">
+    <link rel="stylesheet" href="fonts/stylesheet.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" type="image/png" href="img/LogoKelas1.png">
+</head>
+
+<body>
+    <div id="preloader"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="logo mt-3">
+                        <a href="index.html" class="link">1nfix</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-3 col-sm-8 col-6">
+                    <div class="main-menu stellarnav">
+                        <nav class="navbar-custom py-3" style="background-color: transparent;">
+                            <div class="container justify-content-center p-0">
+                                <ul class="nav nav-pills custom-nav-pills position-relative">
+
+                                        <li class="nav-item">
+                                        <a class="nav-link nav-home" href="#" data-page="home">Dashboard</a>
+                                        </li>
+                                        <li class="nav-item">
+                                        <a class="nav-link" href="#" data-page="members">Class Structure</a>
+                                        </li>
+                                        <li class="nav-item">
+                                        <a class="nav-link" href="#" data-page="gallery">Gallery</a>
+                                        </li>
+                                        <li class="nav-item">
+                                        <a class="nav-link" href="#" data-page="reward">Reward</a>
+                                        </li>
+
+
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <main id="page-content">
+  <!-- Konten dari file lain (members.html, reward.html) akan muncul di sini -->
+    </main>
+    
+
+    <div id="home-gallery"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lb-close">&times;</button>
+    <img id="lb-img" src="" alt="Gambar Besar">
+</div>
+
+<div id="home-schedule"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="fba-social">
+                            <ul class="social">
+                                <li>
+                                    <a href="https://www.instagram.com/int.formatics_class/" target="_blank"
+                                        rel="noopener noreferrer" aria-label="Instagram">
+                                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                                        <span class="text">Instagram</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <p class="copyright">Copyright By@LAGeneracionDoradaDe1nfix+ - 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+
+         <!-- ================= JAVASCRIPT FINAL ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const content = document.getElementById("page-content");
+  const links = document.querySelectorAll(".nav-link[data-page]");
+  const homeGallery = document.getElementById("home-gallery");
+  const lightbox = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lb-img");
+  const lbClose = document.getElementById("lb-close");
+
+  /* ================== FUNGSI LOAD HALAMAN ================== */
+  function loadPage(page) {
+    fetch(page + ".html")
+      .then(res => res.text())
+      .then(html => {
+        content.innerHTML = html;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Jika halaman Home → tampilkan gallery & jadwal
+        if (page === "home") {
+          loadSection("gallery.html", homeGallery);
+          loadSection("schedule.html", homeGallery);
+        } else {
+          homeGallery.innerHTML = ""; // sembunyikan saat bukan home
+        }
+      })
+      .catch(() => {
+        content.innerHTML = "<p style='text-align:center;'>Halaman tidak ditemukan 😢</p>";
+      });
+  }
+
+  /* ================== FUNGSI LOAD GALLERY/JADWAL ================== */
+  function loadSection(file, target) {
+    fetch(file)
+      .then(res => res.text())
+      .then(html => {
+        target.insertAdjacentHTML("beforeend", html);
+        target.style.display = "block";
+        initLightbox(); // aktifkan lightbox tiap kali gallery dimuat
+      })
+      .catch(err => console.error("Gagal memuat " + file, err));
+  }
+
+  /* ================== LIGHTBOX FUNCTION ================== */
+  function initLightbox() {
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    galleryItems.forEach(item => {
+      item.addEventListener("click", () => {
+        lbImg.src = item.src;
+        lightbox.style.display = "flex";
+      });
+    });
+  }
+
+  // Tutup lightbox
+  lbClose.addEventListener("click", () => lightbox.style.display = "none");
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") lightbox.style.display = "none";
+  });
+
+  /* ================== EVENT KLIK MENU ================== */
+  links.forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const page = link.dataset.page;
+      links.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+      loadPage(page);
+
+      // Sembunyikan home gallery jika bukan home
+      if (page !== "home") homeGallery.style.display = "none";
+    });
+  });
+
+  /* ================== INDIKATOR NAVBAR ================== */
+  const indicator = document.createElement("span");
+  indicator.classList.add("active-indicator");
+  const nav = document.querySelector(".custom-nav-pills");
+  if (nav) nav.appendChild(indicator);
+
+  function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const parentRect = el.parentElement.parentElement.getBoundingClientRect();
+    indicator.style.width = rect.width + "px";
+    indicator.style.left = rect.left - parentRect.left + "px";
+    indicator.style.transition = "all 0.3s ease";
+  }
+
+  links.forEach(link => {
+    link.addEventListener("click", () => moveIndicator(link));
+    link.addEventListener("mouseenter", () => moveIndicator(link));
+  });
+
+  /* ================== RESPONSIVE MENU (MOBILE) ================== */
+  const navLinks = document.querySelectorAll('.stellarnav a.nav-link');
+  const menu = document.querySelector('.stellarnav');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth < 992) {
+        const toggleBtn = document.querySelector('.stellarnav .menu-toggle');
+        if (toggleBtn && menu.classList.contains('active')) toggleBtn.click();
+      }
+    });
+  });
+
+  /* ================== LOAD HOME SAAT AWAL ================== */
+  loadPage("home");
+});
+</script>
+<!-- ====================================================== -->
+
+
+
+
+    <!-- JS -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.counterup.min.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/pignose.calendar.min.js"></script>
+    <script src="js/isotope.pkgd.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/stellarnav.min.js"></script>
+    <script src="js/jquery.scrollUp.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const navLinks = document.querySelectorAll('.stellarnav a.nav-link');
+  const menu = document.querySelector('.stellarnav');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Tutup menu setelah link diklik (khusus tampilan mobile)
+      if (window.innerWidth < 992) {
+        const toggleBtn = document.querySelector('.stellarnav .menu-toggle');
+        if (toggleBtn && menu.classList.contains('active')) {
+          toggleBtn.click(); // trigger tombol menu untuk menutup
+        }
+      }
+    });
+  });
+});
+</script>
+
+
+<script>
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbClose = document.getElementById('lb-close');
+
+  galleryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      lbImg.src = item.src;
+      lightbox.style.display = 'flex';
+    });
+  });
+
+  lbClose.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
+
+  lightbox.addEventListener('click', e => {
+    if(e.target === lightbox) lightbox.style.display = 'none';
+  });
+
+  document.addEventListener('keydown', e => {
+    if(e.key === "Escape") lightbox.style.display = 'none';
+  });
+</script>
+
+
+</body>
+
+</html>

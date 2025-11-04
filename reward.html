@@ -1,0 +1,56 @@
+<!-- PANGGIL CSS YANG SAMA -->
+<link rel="stylesheet" href="css/members.css">
+<style>/* ========== JARAK DARI HEADER (DESKTOP) ========== */
+/* === Ruang agar konten tidak tertutup header fixed === */
+body {
+  padding-top: 10px; /* default untuk mobile */
+}
+
+/* Tambah jarak lebih besar untuk tampilan PC/laptop */
+@media (min-width: 992px) {
+  body {
+    padding-top: 140px; /* sesuaikan kalau header lebih tinggi di PC */
+  }
+}
+
+</style>
+
+<!-- =======================
+     REWARD KELAS
+======================== -->
+<section class="section container">
+  <!-- <br><br><br><br><br> -->
+  <h2>Reward Kelas</h2>
+  <p class="section-desc">Penghargaan untuk siswa terbaik dan berprestasi.</p>
+
+  <div class="grid">
+    <article class="card">
+      <div class="card-img">
+        <img src="img/struktur/gifari.jpg" alt="Siswa Terbaik">
+      </div>
+      <div class="card-body">
+        <h3>Siswa Terbaik</h3>
+        <p class="name">Ringga Budi Utomo</p>
+        <p class="desc">Selalu menjadi inspirasi bagi teman-temannya.</p>
+      </div>
+    </article>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const navLinks = document.querySelectorAll('.stellarnav a.nav-link');
+  const menu = document.querySelector('.stellarnav');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Tutup menu setelah link diklik (khusus tampilan mobile)
+      if (window.innerWidth < 992) {
+        const toggleBtn = document.querySelector('.stellarnav .menu-toggle');
+        if (toggleBtn && menu.classList.contains('active')) {
+          toggleBtn.click(); // trigger tombol menu untuk menutup
+        }
+      }
+    });
+  });
+});
+</script>
